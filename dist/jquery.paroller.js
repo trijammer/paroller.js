@@ -1,10 +1,8 @@
 /**
+ * jQuery plugin paroller.js v1.5.0
+ * https://github.com/trijammer/paroller.js
  * Forked from:
- * jQuery plugin paroller.js v1.4.4
  * https://github.com/tgomilar/paroller.js
- * preview: https://tgomilar.github.io/paroller/
- * 
- * Now includes responsive overrides and scroll action prevention
  **/
 (function (factory) {
   'use strict';
@@ -56,25 +54,67 @@
   var setMovement = {
     factor: function (elem, width, options) {
       var factor = (typeof elem.data('paroller-factor') !== 'undefined') ? elem.data('paroller-factor') : options.factor,
-        factorXs = (typeof elem.data('paroller-factor-xs') !== 'undefined') ? elem.data('paroller-factor-xs') : options.factorXs,
-        factorSm = (typeof elem.data('paroller-factor-sm') !== 'undefined') ? elem.data('paroller-factor-sm') : options.factorSm,
-        factorMd = (typeof elem.data('paroller-factor-md') !== 'undefined') ? elem.data('paroller-factor-md') : options.factorMd,
-        factorLg = (typeof elem.data('paroller-factor-lg') !== 'undefined') ? elem.data('paroller-factor-lg') : options.factorLg,
-        factorXl = (typeof elem.data('paroller-factor-xl') !== 'undefined') ? elem.data('paroller-factor-xl') : options.factorXl;
+          factorXs = (typeof elem.data('paroller-factor-xs') !== 'undefined') ? elem.data('paroller-factor-xs') : options.factorXs,
+          factorSm = (typeof elem.data('paroller-factor-sm') !== 'undefined') ? elem.data('paroller-factor-sm') : options.factorSm,
+          factorMd = (typeof elem.data('paroller-factor-md') !== 'undefined') ? elem.data('paroller-factor-md') : options.factorMd,
+          factorLg = (typeof elem.data('paroller-factor-lg') !== 'undefined') ? elem.data('paroller-factor-lg') : options.factorLg,
+          factorXl = (typeof elem.data('paroller-factor-xl') !== 'undefined') ? elem.data('paroller-factor-xl') : options.factorXl,
+          isXs = false,
+          isSm = false,
+          isMd = false,
+          isLg = false,
+          isXl = false;
+      
+      // Use CSS sizer elements if available for accurate Bootstrap breakpoints
+      if ($('#css-sizers #is-xs').length && $('#css-sizers #is-sm').length && $('#css-sizers #is-md').length && $('#css-sizers #is-lg').length && $('#css-sizers #is-xl').length) {
+        var $cssSizers = $('#css-sizers');
+        if ($cssSizers.children('#is-xl').is(':visible')) {
+          isXl = true;
+        }
+        else if ($cssSizers.children('#is-lg').is(':visible')) {
+          isLg = true;
+        }
+        else if ($cssSizers.children('#is-md').is(':visible')) {
+          isMd = true;
+        }
+        else if ($cssSizers.children('#is-sm').is(':visible')) {
+          isSm = true;
+        }
+        else if ($cssSizers.children('#is-xs').is(':visible')) {
+          isXs = true;
+        }
+      }
+      else {
+        if (width < 576) {
+          isXs = true;
+        }
+        else if (width <= 768) {
+          isSm = true;
+        }
+        else if (width <= 1024) {
+          isMd = true;
+        }
+        else if (width <= 1200) {
+          isLg = true;
+        }
+        else if (width <= 1920) {
+          isXl = true;
+        }
+      }
 
-      if (width < 576 && factorXs !== false) {
+      if (isXs && factorXs !== false) {
         return factorXs;
       }
-      else if (width <= 768 && factorSm !== false) {
+      else if (isSm && factorSm !== false) {
         return factorSm;
       }
-      else if (width <= 1024 && factorMd !== false) {
+      else if (isMd && factorMd !== false) {
         return factorMd;
       }
-      else if (width <= 1200 && factorLg !== false) {
+      else if (isLg && factorLg !== false) {
         return factorLg;
       }
-      else if (width <= 1920 && factorXl !== false) {
+      else if (isXl && factorXl !== false) {
         return factorXl;
       }
       else {
