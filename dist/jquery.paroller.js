@@ -184,6 +184,7 @@
 
       $(window).on("scroll", function () {
         var scrolling = $(this).scrollTop();
+        var inViewport = offset < scrolling + windowHeight && offset + height > scrolling;
 
         factor = setMovement.factor($this, width, options);
 
@@ -195,13 +196,13 @@
           working = true;
         }
 
-        if (type === "background") {
+        if (type === "background" && inViewport) {
           if (direction === "vertical") {
             setDirection.bgVertical($this, bgOffset);
           } else if (direction === "horizontal") {
             setDirection.bgHorizontal($this, bgOffset);
           }
-        } else if (type === "foreground" && scrolling <= documentHeight) {
+        } else if (type === "foreground" && inViewport && scrolling <= documentHeight) {
           if (direction === "vertical") {
             setDirection.vertical($this, transform, transition, oldTransform);
           } else if (direction === "horizontal") {
