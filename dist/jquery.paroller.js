@@ -160,8 +160,8 @@
                 offset = $this.offset().top;
                 height = $this.outerHeight();
                 factor = setMovement.factor($this, width, options);
-                bgOffset = Math.round(offset * factor);
-                transform = Math.round((offset - (windowHeight / 2) + height) * factor);
+                bgOffset = Math.round((offset - scrolling) * factor);
+                transform = Math.round(((offset - (windowHeight / 2) + height) - scrolling) * factor);
 
                 if (! working) {
                     window.requestAnimationFrame(scrollAction);
