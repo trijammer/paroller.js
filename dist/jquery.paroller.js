@@ -132,9 +132,10 @@
       var transition = dataTransition ? dataTransition : options.transition;
       var type = dataType ? dataType : options.type;
       var direction = dataDirection ? dataDirection : options.direction;
-      var factor = 0;
-      var bgOffset = setMovement.bgOffset(offset, factor);
-      var transform = setMovement.transform(offset, factor, windowHeight, height);
+      var initialScrollTop = $(window).scrollTop();
+      var factor = setMovement.factor($this, width, options);
+      var bgOffset = Math.round((offset - initialScrollTop) * factor);
+      var transform = Math.round((offset - windowHeight / 2 + height - initialScrollTop) * factor);
 
       if (type === "background") {
         if (direction === "vertical") {
@@ -183,13 +184,8 @@
 
       $(window).on("scroll", function () {
         var scrolling = $(this).scrollTop();
-        var scrollTop = $(document).scrollTop();
 
-        if (scrollTop === 0) {
-          factor = 0;
-        } else {
-          factor = setMovement.factor($this, width, options);
-        }
+        factor = setMovement.factor($this, width, options);
 
         bgOffset = Math.round((offset - scrolling) * factor);
         transform = Math.round((offset - windowHeight / 2 + height - scrolling) * factor);
