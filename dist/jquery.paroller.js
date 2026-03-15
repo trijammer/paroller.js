@@ -1,5 +1,5 @@
 /**
- * jQuery plugin paroller.js v1.4.7
+ * jQuery plugin paroller.js v1.5.0
  * https://github.com/tgomilar/paroller.js
  * preview: https://tgomilar.github.io/paroller/
  * author: Tanja Gomilar
