@@ -106,11 +106,11 @@
     var options = $.extend(
       {
         factor: 0, // - to +
-        factorXs: 0, // - to +
-        factorSm: 0, // - to +
-        factorMd: 0, // - to +
-        factorLg: 0, // - to +
-        factorXl: 0, // - to +
+        factorXs: null, // - to +
+        factorSm: null, // - to +
+        factorMd: null, // - to +
+        factorLg: null, // - to +
+        factorXl: null, // - to +
         transition: "translate 0.1s ease", // CSS transition
         type: "background", // foreground
         direction: "vertical", // horizontal
@@ -134,7 +134,7 @@
       var direction = dataDirection ? dataDirection : options.direction;
       var initialScrollTop = $(window).scrollTop();
       var factor = setMovement.factor($this, width, options);
-      var bgOffset = Math.round((offset - initialScrollTop) * factor);
+      var bgOffset = 0; // background starts at natural CSS position
       var transform = Math.round((offset - windowHeight / 2 + height - initialScrollTop) * factor);
 
       if (type === "background") {
@@ -186,7 +186,11 @@
         var scrolling = $(this).scrollTop();
         var inViewport = offset < scrolling + windowHeight && offset + height > scrolling;
 
-        factor = setMovement.factor($this, width, options);
+        if (type === "background" && scrolling === 0) {
+          factor = 0;
+        } else {
+          factor = setMovement.factor($this, width, options);
+        }
 
         bgOffset = Math.round((offset - scrolling) * factor);
         transform = Math.round((offset - windowHeight / 2 + height - scrolling) * factor);
